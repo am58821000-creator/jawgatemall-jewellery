@@ -365,8 +365,6 @@ function saveSaleLocally() {
   renderSalesTable();
   showToast('Entry saved locally!');
 }
-
-}
 async function handleSaleSubmit(e) {
   e.preventDefault();
   const editId        = qs('#editSaleId').value;
