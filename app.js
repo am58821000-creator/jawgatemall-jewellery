@@ -4,8 +4,8 @@
 'use strict';
 
 const DAILY_TARGET = 418;
-const ADMIN_USER   = 'jhr';
-const ADMIN_PASS   = '12345';
+const ADMIN_USER = 'jhr';
+const ADMIN_PASS = '12345';
 const TBL_SALES    = 'daily_sales';
 const TBL_PIECES   = 'sold_pieces';
 const PAGE_SIZE    = 12;
