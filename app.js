@@ -344,7 +344,48 @@ function resetSaleForm() {
   setTxt('#submitSaleBtnText', 'Save Entry');
   qs('#salesFormTitle').innerHTML = '<i class="fas fa-cash-register"></i> Daily Sales Entry';
 }
+function saveSaleLocally() {
+  const date          = qs('#saleDate').value;
+  const gold_sales    = parseFloat(qs('#goldSales').value) || 0;
+  const gold_profit   = parseFloat(qs('#goldProfit').value) || 0;
+  const diamond_sales = parseFloat(qs('#diamondSales').value) || 0;
+  const diamond_profit= parseFloat(qs('#diamondProfit').value) || 0;
+  const notes         = qs('#saleNotes').value.trim();
+  const gold_pct      = parseFloat((gold_profit / DAILY_TARGET * 100).toFixed(3));
+  const diamond_pct   = parseFloat((diamond_profit / DAILY_TARGET * 100).toFixed(3));
+  const total_profit  = parseFloat((gold_profit + diamond_profit).toFixed(3));
 
+  const saleData = { date, gold_sales, gold_profit, gold_pct, diamond_sales, diamond_profit, diamond_pct, total_profit, notes };
+
+  allSales.push(saleData);
+  localStorage.setItem('daily_sales', JSON.stringify(allSales));
+
+  updateSalePreviews();
+  resetSaleForm();
+  renderSalesTable();
+  showToast('Entry saved locally!');
+}
+function saveSaleLocally() {
+  const date          = qs('#saleDate').value;
+  const gold_sales    = parseFloat(qs('#goldSales').value) || 0;
+  const gold_profit   = parseFloat(qs('#goldProfit').value) || 0;
+  const diamond_sales = parseFloat(qs('#diamondSales').value) || 0;
+  const diamond_profit= parseFloat(qs('#diamondProfit').value) || 0;
+  const notes         = qs('#saleNotes').value.trim();
+  const gold_pct      = parseFloat((gold_profit / DAILY_TARGET * 100).toFixed(3));
+  const diamond_pct   = parseFloat((diamond_profit / DAILY_TARGET * 100).toFixed(3));
+  const total_profit  = parseFloat((gold_profit + diamond_profit).toFixed(3));
+
+  const saleData = { date, gold_sales, gold_profit, gold_pct, diamond_sales, diamond_profit, diamond_pct, total_profit, notes };
+
+  allSales.push(saleData);
+  localStorage.setItem('daily_sales', JSON.stringify(allSales));
+
+  updateSalePreviews();
+  resetSaleForm();
+  renderSalesTable();
+  showToast('Entry saved locally!');
+}
 async function handleSaleSubmit(e) {
   e.preventDefault();
   const editId        = qs('#editSaleId').value;
