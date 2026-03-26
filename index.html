@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jawhara Jewellery — Gate Mall Branch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ══════════════════ LOGIN SCREEN ══════════════════ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-bg-pattern"></div>
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-diamond-icon">◆</div>
+      <h1 class="login-brand">Jawhara Jewellery</h1>
+      <p class="login-branch">The Gate Mall Branch</p>
+      <div class="login-divider"></div>
+      <p class="login-subtitle">Internal Management System</p>
+    </div>
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input type="text" id="loginUsername" placeholder="Enter username" autocomplete="username" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" />
+          <i class="fas fa-eye toggle-pass" id="togglePass"></i>
+        </div>
+      </div>
+      <div id="loginError" class="login-error hidden">Invalid credentials. Please try again.</div>
+      <button type="submit" class="btn-login"><span>Sign In</span><i class="fas fa-arrow-right"></i></button>
+    </form>
+    <p class="login-footer-text">© 2025 Jawhara Jewellery. All rights reserved.</p>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN APP ══════════════════ -->
+<div id="mainApp" class="app-container hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <span class="brand-diamond">◆</span>
+        <div><h2>Jawhara</h2><small>Gate Mall Branch</small></div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li class="nav-item active" data-page="dashboard">
+          <a href="#"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+        </li>
+        <li class="nav-item" data-page="sales">
+          <a href="#"><i class="fas fa-cash-register"></i><span>Daily Sales Entry</span></a>
+        </li>
+        <li class="nav-item" data-page="pieces">
+          <a href="#"><i class="fas fa-gem"></i><span>Monthly Sold Pieces</span></a>
+        </li>
+        <li class="nav-item" data-page="report">
+          <a href="#"><i class="fas fa-file-invoice"></i><span>Monthly Report</span></a>
+        </li>
+        <li class="nav-item" data-page="piecesreport">
+          <a href="#"><i class="fas fa-scroll"></i><span>Pieces Report</span></a>
+        </li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">A</div>
+        <div><p class="user-name">Admin</p><p class="user-role">Full Access</p></div>
+      </div>
+      <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        <div class="page-title-wrap">
+          <h2 id="pageTitle">Dashboard</h2>
+          <span id="pageSubtitle">Overview & Analytics</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbarDate"></div>
+        <span class="user-badge">Admin</span>
+      </div>
+    </header>
+
+    <!-- ══ PAGE: DASHBOARD ══ -->
+    <section id="page-dashboard" class="page active">
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card gold-card">
+          <div class="kpi-icon"><i class="fas fa-coins"></i></div>
+          <div class="kpi-content">
+            <p class="kpi-label">Today's Profit</p>
+            <h3 class="kpi-value" id="kpiToday">0.000 KWD</h3>
+            <p class="kpi-sub" id="kpiTodayEntries">0 entries</p>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div class="kpi-content">
+            <p class="kpi-label">Monthly Profit</p>
+            <h3 class="kpi-value" id="kpiMonth">0.000 KWD</h3>
+            <p class="kpi-sub" id="kpiMonthEntries">0 entries this month</p>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fas fa-star"></i></div>
+          <div class="kpi-content">
+            <p class="kpi-label">Gold Profit (Month)</p>
+            <h3 class="kpi-value" id="kpiGold">0.000 KWD</h3>
+            <p class="kpi-sub" id="kpiGoldPct">0% of target</p>
+          </div>
+        </div>
+        <div class="kpi-card diamond-card">
+          <div class="kpi-icon"><i class="fas fa-ring"></i></div>
+          <div class="kpi-content">
+            <p class="kpi-label">Diamond Profit (Month)</p>
+            <h3 class="kpi-value" id="kpiDiamond">0.000 KWD</h3>
+            <p class="kpi-sub" id="kpiDiamondPct">0% of target</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Bar -->
+      <div class="performance-card">
+        <div class="performance-header">
+          <div>
+            <h3>Daily Performance</h3>
+            <p>Target: 418.000 KWD</p>
+          </div>
+          <div class="performance-pct" id="perfPct">0%</div>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar" id="perfBar" style="width:0%"></div></div>
+        <div class="performance-meta">
+          <span id="perfStatus">No data for today</span>
+          <span id="perfRemaining"></span>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="chart-card large">
+          <div class="chart-header">
+            <h3>Profit Trend — This Month</h3>
+            <div class="chart-legend">
+              <span class="legend-dot gold"></span>Gold
+              <span class="legend-dot diamond"></span>Diamond
+            </div>
+          </div>
+          <div style="height:280px;position:relative;"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="chart-card small">
+          <div class="chart-header"><h3>Category Split</h3></div>
+          <div style="height:280px;position:relative;"><canvas id="splitChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Dashboard Print -->
+      <div class="section-actions no-print">
+        <button class="btn-secondary" id="dashPrintBtn"><i class="fas fa-print"></i> Print Dashboard</button>
+        <button class="btn-primary" id="dashPdfBtn"><i class="fas fa-file-pdf"></i> Export Dashboard PDF</button>
+      </div>
+
+      <!-- Dashboard Printable Content -->
+      <div id="dashboardPrintContent" class="report-document" style="display:none;">
+        <div class="report-header-text">
+          <h1 class="report-main-title">Jawhara Jewellery</h1>
+          <h2 class="report-sub-title">The Gate Mall Branch</h2>
+          <div class="report-title-divider"></div>
+          <h3 class="report-type-title">Dashboard Summary</h3>
+          <p class="report-period" id="dashPrintPeriod"></p>
+        </div>
+        <table class="report-table">
+          <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+          <tbody id="dashPrintBody"></tbody>
+        </table>
+        <div class="report-footer-doc">
+          <p class="report-generated">Generated by Sales System &nbsp;|&nbsp; <span id="dashPrintDate"></span></p>
+          <div class="report-signature"><p>Manager Signature: __________________________________________</p></div>
+        </div>
+      </div>
+
+      <!-- Recent Sales -->
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>Recent Daily Sales Entries</h3>
+          <button class="btn-ghost" id="viewAllBtn">View All <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Gold Sales</th>
+                <th>Gold Profit</th>
+                <th>Gold %</th>
+                <th>Diamond Sales</th>
+                <th>Diamond Profit</th>
+                <th>Diamond %</th>
+                <th>Total Profit</th>
+              </tr>
+            </thead>
+            <tbody id="recentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PAGE: DAILY SALES ENTRY ══ -->
+    <section id="page-sales" class="page hidden">
+
+      <!-- Entry Form -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <h3 id="salesFormTitle"><i class="fas fa-cash-register"></i> Daily Sales Entry</h3>
+        </div>
+        <form id="saleForm" class="sale-form">
+          <input type="hidden" id="editSaleId" value="" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" id="saleDate" required />
+            </div>
+            <div class="form-group">
+              <label>Notes</label>
+              <input type="text" id="saleNotes" placeholder="Optional notes..." />
+            </div>
+          </div>
+
+          <!-- Gold Section -->
+          <div class="sales-section gold-section">
+            <div class="sales-section-title"><i class="fas fa-star"></i> Gold</div>
+            <div class="form-row three-col">
+              <div class="form-group">
+                <label>Gold Sales (KWD) <span class="required">*</span></label>
+                <input type="number" id="goldSales" step="0.001" min="0" placeholder="0.000" required />
+              </div>
+              <div class="form-group">
+                <label>Gold Profit (KWD) <span class="required">*</span></label>
+                <input type="number" id="goldProfit" step="0.001" min="0" placeholder="0.000" required />
+              </div>
+              <div class="form-group">
+                <label>Gold % of Target</label>
+                <div class="calc-display gold-calc" id="goldPctDisplay">— %</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Diamond Section -->
+          <div class="sales-section diamond-section">
+            <div class="sales-section-title"><i class="fas fa-ring"></i> Diamond</div>
+            <div class="form-row three-col">
+              <div class="form-group">
+                <label>Diamond Sales (KWD) <span class="required">*</span></label>
+                <input type="number" id="diamondSales" step="0.001" min="0" placeholder="0.000" required />
+              </div>
+              <div class="form-group">
+                <label>Diamond Profit (KWD) <span class="required">*</span></label>
+                <input type="number" id="diamondProfit" step="0.001" min="0" placeholder="0.000" required />
+              </div>
+              <div class="form-group">
+                <label>Diamond % of Target</label>
+                <div class="calc-display diamond-calc" id="diamondPctDisplay">— %</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Preview -->
+          <div class="total-preview">
+            <div class="total-item"><span>Total Profit</span><strong id="totalProfitCalc">0.000 KWD</strong></div>
+            <div class="total-item"><span>Total % of Target (418 KWD)</span><strong id="totalPctCalc">0%</strong></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelEditBtn"><i class="fas fa-times"></i> Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-check"></i> <span id="submitSaleBtnText">Save Entry</span></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sales Records Table -->
+      <div class="table-card full-width">
+        <div class="table-card-header">
+          <h3><i class="fas fa-table"></i> Sales Records</h3>
+          <div class="table-controls">
+            <input type="month" id="filterSalesMonth" class="filter-select" />
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchSales" placeholder="Search..." />
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Gold Sales</th>
+                <th>Gold Profit</th>
+                <th>Gold %</th>
+                <th>Diamond Sales</th>
+                <th>Diamond Profit</th>
+                <th>Diamond %</th>
+                <th>Total Profit</th>
+                <th>Notes</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="salesCount">0 records</span>
+          <div class="pagination" id="salesPagination"></div>
+        </div>
+      </div>
+
+      <!-- Sales Print Controls -->
+      <div class="section-actions no-print">
+        <div class="form-group" style="margin:0">
+          <label style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-secondary);display:block;margin-bottom:8px;">Report Month</label>
+          <input type="month" id="salesReportMonth" class="filter-select" />
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <button class="btn-secondary" id="printSalesBtn"><i class="fas fa-print"></i> Print Sales Report</button>
+          <button class="btn-primary" id="exportSalesPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+        </div>
+      </div>
+
+      <!-- Sales Printable Report -->
+      <div id="salesReportContent" class="report-document" style="display:none;">
+        <div class="report-header-text">
+          <h1 class="report-main-title">Jawhara Jewellery</h1>
+          <h2 class="report-sub-title">The Gate Mall Branch</h2>
+          <div class="report-title-divider"></div>
+          <h3 class="report-type-title">Daily Sales Report</h3>
+          <p class="report-period" id="salesReportPeriod"></p>
+        </div>
+        <table class="report-table" id="salesReportTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Gold Sales (KWD)</th>
+              <th>Gold Profit (KWD)</th>
+              <th>Gold %</th>
+              <th>Diamond Sales (KWD)</th>
+              <th>Diamond Profit (KWD)</th>
+              <th>Diamond %</th>
+              <th>Total Profit (KWD)</th>
+            </tr>
+          </thead>
+          <tbody id="salesReportBody"></tbody>
+          <tfoot id="salesReportFoot"></tfoot>
+        </table>
+        <div class="report-footer-doc">
+          <p class="report-generated">Generated by Sales System &nbsp;|&nbsp; <span id="salesReportDate"></span></p>
+          <div class="report-signature"><p>Manager Signature: __________________________________________</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PAGE: MONTHLY SOLD PIECES ══ -->
+    <section id="page-pieces" class="page hidden">
+
+      <!-- Entry Form -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <h3 id="piecesFormTitle"><i class="fas fa-gem"></i> Add Sold Piece</h3>
+        </div>
+        <form id="piecesForm" class="sale-form">
+          <input type="hidden" id="editPieceId" value="" />
+          <div class="form-row three-col">
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" id="pieceDate" required />
+            </div>
+            <div class="form-group">
+              <label>Item Name <span class="required">*</span></label>
+              <input type="text" id="pieceName" placeholder="e.g. Gold Ring 21K, Diamond Pendant..." required />
+            </div>
+            <div class="form-group">
+              <label>Quantity <span class="required">*</span></label>
+              <input type="number" id="pieceQty" min="1" value="1" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full">
+              <label>Notes</label>
+              <input type="text" id="pieceNotes" placeholder="Optional notes..." />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelPieceBtn"><i class="fas fa-times"></i> Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> <span id="submitPieceBtnText">Add Piece</span></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pieces Table -->
+      <div class="table-card full-width">
+        <div class="table-card-header">
+          <h3><i class="fas fa-list"></i> Sold Pieces Records</h3>
+          <div class="table-controls">
+            <input type="month" id="filterPiecesMonth" class="filter-select" />
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchPieces" placeholder="Search items..." />
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Notes</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="piecesTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <span id="piecesCount">0 records</span>
+          <div class="pagination" id="piecesPagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PAGE: MONTHLY REPORT (Sales) ══ -->
+    <section id="page-report" class="page hidden">
+      <div class="report-controls no-print">
+        <div class="form-group" style="margin:0">
+          <label style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-secondary);display:block;margin-bottom:8px;">Select Month</label>
+          <input type="month" id="reportMonth" class="filter-select" />
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <button class="btn-secondary" id="printReportBtn"><i class="fas fa-print"></i> Print</button>
+          <button class="btn-primary" id="exportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+        </div>
+      </div>
+
+      <div id="reportContent" class="report-document">
+        <div class="report-header-text">
+          <h1 class="report-main-title">Jawhara Jewellery</h1>
+          <h2 class="report-sub-title">The Gate Mall Branch</h2>
+          <div class="report-title-divider"></div>
+          <h3 class="report-type-title">Monthly Sales Report</h3>
+          <p class="report-period" id="reportPeriod"></p>
+        </div>
+        <table class="report-table report-table-full">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Gold Sales (KWD)</th>
+              <th>Gold Profit (KWD)</th>
+              <th>Gold % Target</th>
+              <th>Diamond Sales (KWD)</th>
+              <th>Diamond Profit (KWD)</th>
+              <th>Diamond % Target</th>
+              <th>Total Profit (KWD)</th>
+            </tr>
+          </thead>
+          <tbody id="reportTableBody"></tbody>
+          <tfoot id="reportTableFoot"></tfoot>
+        </table>
+        <div class="report-summary">
+          <div class="summary-grid four-col">
+            <div class="summary-item">
+              <span class="summary-label">Total Gold Profit</span>
+              <span class="summary-value gold-text" id="rptGoldProfit">0.000 KWD</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Gold % of Target</span>
+              <span class="summary-value gold-text" id="rptGoldPct">0%</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Total Diamond Profit</span>
+              <span class="summary-value diamond-text" id="rptDiamondProfit">0.000 KWD</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Diamond % of Target</span>
+              <span class="summary-value diamond-text" id="rptDiamondPct">0%</span>
+            </div>
+            <div class="summary-item total">
+              <span class="summary-label">Total Profit</span>
+              <span class="summary-value" id="rptTotalProfit">0.000 KWD</span>
+            </div>
+            <div class="summary-item total">
+              <span class="summary-label">Total % of Target</span>
+              <span class="summary-value" id="rptTotalPct">0%</span>
+            </div>
+          </div>
+        </div>
+        <div class="report-footer-doc">
+          <p class="report-generated">Generated by Sales System &nbsp;|&nbsp; <span id="rptGenDate"></span></p>
+          <div class="report-signature"><p>Manager Signature: __________________________________________</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PAGE: PIECES REPORT ══ -->
+    <section id="page-piecesreport" class="page hidden">
+      <div class="report-controls no-print">
+        <div class="form-group" style="margin:0">
+          <label style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-secondary);display:block;margin-bottom:8px;">Select Month</label>
+          <input type="month" id="piecesReportMonth" class="filter-select" />
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <button class="btn-secondary" id="printPiecesReportBtn"><i class="fas fa-print"></i> Print</button>
+          <button class="btn-primary" id="exportPiecesReportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+        </div>
+      </div>
+
+      <div id="piecesReportContent" class="report-document">
+        <div class="report-header-text">
+          <h1 class="report-main-title">Jawhara Jewellery</h1>
+          <h2 class="report-sub-title">The Gate Mall Branch</h2>
+          <div class="report-title-divider"></div>
+          <h3 class="report-type-title">Monthly Sold Pieces Report</h3>
+          <p class="report-period" id="piecesReportPeriod"></p>
+        </div>
+        <table class="report-table">
+          <thead>
+            <tr><th>#</th><th>Date</th><th>Item Name</th><th>Quantity</th><th>Notes</th></tr>
+          </thead>
+          <tbody id="piecesReportBody"></tbody>
+        </table>
+        <div class="report-summary">
+          <div class="summary-grid">
+            <div class="summary-item total">
+              <span class="summary-label">Total Pieces Sold</span>
+              <span class="summary-value" id="prptTotalQty">0 pieces</span>
+            </div>
+            <div class="summary-item total">
+              <span class="summary-label">Total Items (Types)</span>
+              <span class="summary-value" id="prptTotalItems">0 items</span>
+            </div>
+          </div>
+        </div>
+        <div class="report-footer-doc">
+          <p class="report-generated">Generated by Sales System &nbsp;|&nbsp; <span id="piecesRptDate"></span></p>
+          <div class="report-signature"><p>Manager Signature: __________________________________________</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="modal hidden">
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal-box">
+    <div class="modal-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+    <h3>Confirm Delete</h3>
+    <p id="deleteModalMsg">Are you sure you want to delete this record? This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMessage"></span>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
